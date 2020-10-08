@@ -4,10 +4,12 @@ import HomePage from './pages/HomePage';
 import ErrorPage from './pages/ErrorPage';
 import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
+import UserPage from './pages/UserPage';
 import Navbar from './components/Navbar';
 import LanguageSelector from './components/LanguageSelector';
 import { changeLanguage } from './api/ApiCall';
 import { withTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 
 class App extends Component {
   constructor(){
@@ -16,15 +18,22 @@ class App extends Component {
   }
   
   render() {
-    const { i18n }=this.props;
+    const { i18n, isLoggedIn }=this.props;
     return (
       <div>
         <Navbar />
         <div className="container">
           <Switch>
             <Route path='/' exact strict component={HomePage} />
-            <Route path='/signup' exact strict component={SignupPage} />
-            <Route path='/login' exact strict component={LoginPage} />
+            {
+              !isLoggedIn &&
+              <Route path='/signup' exact strict component={SignupPage} />
+            }
+            {
+              !isLoggedIn &&
+              <Route path='/login' exact strict component={LoginPage} />
+            }
+            <Route path='/user/:username' exact strict component={UserPage} />
             <Route exact strict component={ErrorPage} />
           </Switch>
           <LanguageSelector i18n={i18n} />
@@ -36,4 +45,7 @@ class App extends Component {
 
 const AppWithTranslation=withTranslation()(App);
 
-export default AppWithTranslation;
+const mapStateToProps=store=>{
+  return store;
+}
+export default connect(mapStateToProps)(AppWithTranslation);

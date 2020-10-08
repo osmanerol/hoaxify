@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import Input from '../components/Input';
-import { signup } from '../api/ApiCall';
 import { Link } from 'react-router-dom';
+import ButtonWithProgress from '../components/ButtonWithProgress';
+import { withApiProgress } from '../shared/ApiProgress';
+import { connect } from 'react-redux';
+import { signupHandler } from '../redux/AuthAction';
 
 class SignupPage extends Component {
     state={
@@ -11,7 +14,6 @@ class SignupPage extends Component {
         password:null,
         passwordConfirm:null,
         errors:{},
-        pendingApiCall:false
     }
     
     onChange=event=>{
@@ -41,16 +43,16 @@ class SignupPage extends Component {
     onClick=async event=>{
         event.preventDefault();
         const { username, displayName, password }=this.state;
+        const { history, signupHandler }=this.props;
+        const { push }=history;
         const body={
             username,
             displayName,
             password
         }
-        this.setState({
-            pendingApiCall:true
-        })
         try{
-            await signup(body);
+            await signupHandler(body);
+            push('/');
         } catch(error){
             if(error.response.data.validationErrors){
                 this.setState({
@@ -58,13 +60,11 @@ class SignupPage extends Component {
                 })
             }
         }
-        this.setState({
-            pendingApiCall:false
-        })
     }
 
     render() {
-        const { errors, pendingApiCall }=this.state;
+        const { pendingApiCall }=this.props;
+        const { errors }=this.state;
         const { username, displayName, password, passwordConfirm }=errors;
         const { t }=this.props;
         return (
@@ -75,12 +75,9 @@ class SignupPage extends Component {
                     <Input label={t("Display Name")} type="text" name="displayName" onChange={this.onChange} error={displayName} />
                     <Input label={t("Password")} type="password" name="password" onChange={this.onChange} error={password} />
                     <Input label={t("Password Confirm")} type="password" name="passwordConfirm" onChange={this.onChange} error={passwordConfirm} />
-                    <button className="btn btn-secondary btn-block" onClick={this.onClick} disabled={pendingApiCall || passwordConfirm!==undefined}>
-                        {pendingApiCall && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> } 
-                        <span> {t("Sign Up")}</span>
-                    </button>
+                    <ButtonWithProgress onClick={this.onClick} disabled={pendingApiCall || passwordConfirm!==undefined}pendingApiCall={pendingApiCall} label={t("Sign Up")} />
                     <div className="text-center mt-2">
-                        <p className="muted">{t("Do you have an account ?")}</p>
+                        <p className="muted mb-1">{t("Do you have an account ?")}</p>
                         <Link to="/login">{t("Login")}</Link>
                     </div>
                 </form>
@@ -90,5 +87,11 @@ class SignupPage extends Component {
 }
 
 const SignupPageWithTranslation=withTranslation()(SignupPage);
+const SignupPageWithApiProgressForSignupPage=withApiProgress(SignupPageWithTranslation, "/api/1.0/users");
+const SignupPageWithApiProgressForAuthRequest=withApiProgress(SignupPageWithApiProgressForSignupPage, "/api/1.0/auth");
 
-export default SignupPageWithTranslation;
+const mapDispatchToProps={
+    signupHandler
+}
+
+export default connect(null,mapDispatchToProps)(SignupPageWithApiProgressForAuthRequest);

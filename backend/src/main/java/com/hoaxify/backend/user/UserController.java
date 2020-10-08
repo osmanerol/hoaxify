@@ -1,21 +1,12 @@
 package com.hoaxify.backend.user;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hoaxify.backend.error.ApiError;
 import com.hoaxify.backend.shared.GenericResponse;
 
 @RestController
@@ -30,6 +21,7 @@ public class UserController {
 		return new GenericResponse("user created");
 	}
 	
+	/*
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ApiError handleValidationException(MethodArgumentNotValidException exception) {
@@ -41,5 +33,5 @@ public class UserController {
 		error.setValidationErrors(validationErrors);
 		return error;
 	}
-	
+	*/
 }

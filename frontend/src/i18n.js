@@ -13,7 +13,8 @@ i18n.use(initReactI18next).init({
                 "Password Confirm":"Password Confirm",
                 "password missmatch":"password missmatch",
                 "Do you have an account ?":"Do you have an account ?",
-                "Don't you have an account ?":"Don't you have an account ?"
+                "Don't you have an account ?":"Don't you have an account ?",
+                "Logout":"Logout"
             }
         },
         tr:{
@@ -26,7 +27,8 @@ i18n.use(initReactI18next).init({
                 "Password Confirm":"Şifre Tekrar",
                 "password missmatch":"şifreler eşleşmiyor",
                 "Do you have an account ?":"Zaten hesabın var mı ?",
-                "Don't you have an account ?":"Hesabın yok mu ?"
+                "Don't you have an account ?":"Hesabın yok mu ?",
+                "Logout":"Çıkış Yap"
             }
         }
     },
