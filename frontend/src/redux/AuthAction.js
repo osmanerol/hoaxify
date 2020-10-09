@@ -33,7 +33,7 @@ export const loginHandler=creds=>{
 export const signupHandler=body=>{
     return async dispatch=>{
         const response=await signup(body);
-        await dispatch(loginHandler(body));
+        dispatch(loginHandler(body));
         return response;
     }
 }
