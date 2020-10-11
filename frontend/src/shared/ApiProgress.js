@@ -34,5 +34,6 @@ export const useApiProgress=apiPath=>{
             unregisterInterceptors();
         }
     })
+    // },[])
     return pendingApiCall;
 }

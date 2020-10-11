@@ -6,29 +6,35 @@ i18n.use(initReactI18next).init({
         en:{
             translations:{
                 "Sign Up":"Sign Up",
-                "Login":"Login",
-                "Username":"Username",
+                Login:"Login",
+                Username:"Username",
                 "Display Name":"Display Name",
-                "Password":"Password",
+                Password:"Password",
                 "Password Confirm":"Password Confirm",
                 "password missmatch":"password missmatch",
                 "Do you have an account ?":"Do you have an account ?",
                 "Don't you have an account ?":"Don't you have an account ?",
-                "Logout":"Logout"
+                Logout:"Logout",
+                Users:"Users",
+                Previous:"< previous",
+                Next:"next >"
             }
         },
         tr:{
             translations:{
                 "Sign Up":"Kaydol",
-                "Login":"Giriş Yap",
-                "Username":"Kullanıcı Adı",
-                "Display Name":"Tercih Edilen İsim",
-                "Password":"Şifre",
+                Login:"Giriş Yap",
+                Username:"Kullanıcı Adı",
+                'Display Name':"Tercih Edilen İsim",
+                Password:"Şifre",
                 "Password Confirm":"Şifre Tekrar",
                 "password missmatch":"şifreler eşleşmiyor",
                 "Do you have an account ?":"Zaten hesabın var mı ?",
                 "Don't you have an account ?":"Hesabın yok mu ?",
-                "Logout":"Çıkış Yap"
+                Logout:"Çıkış Yap",
+                Users:"Kullanıcılar",
+                Previous:"< önceki",
+                Next:"sonraki >"
             }
         }
     },

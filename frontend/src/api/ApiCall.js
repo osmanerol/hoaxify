@@ -11,3 +11,7 @@ export const login=creds=>{
 export const changeLanguage=language=>{
     axios.defaults.headers['accept-language']=language;
 }
+
+export const getUsers=(page=0,size=3)=>{
+    return axios.get(`/api/1.0/users?page=${page}&size=${size}`);
+}

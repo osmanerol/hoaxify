@@ -24,11 +24,13 @@ public class BackendApplication {
 			
 			@Override
 			public void run(String... args) throws Exception {
-				User user=new User();
-				user.setUsername("user");
-				user.setDisplayName("User");
-				user.setPassword("P4ssword");
-				userService.save(user);
+				for(int i=1;i<=25;i++) {
+					User user=new User();
+					user.setUsername("user"+i);
+					user.setDisplayName("User "+i);
+					user.setPassword("P4ssword");
+					userService.save(user);
+				}
 			}
 		};
 	}

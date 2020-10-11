@@ -3,11 +3,16 @@ package com.hoaxify.backend.user;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hoaxify.backend.shared.GenericResponse;
+import com.hoaxify.backend.user.vm.UserVm;
+
 
 @RestController
 public class UserController {
@@ -21,17 +26,10 @@ public class UserController {
 		return new GenericResponse("user created");
 	}
 	
-	/*
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ApiError handleValidationException(MethodArgumentNotValidException exception) {
-		ApiError error=new ApiError(400,"validation exception","/api/1.0/users");
-		Map<String, String> validationErrors=new HashMap<String, String>();
-		for(FieldError fieldError:exception.getBindingResult().getFieldErrors()) {
-			validationErrors.put(fieldError.getField(),fieldError.getDefaultMessage());
-		}
-		error.setValidationErrors(validationErrors);
-		return error;
+	//	map function iceride tekil olarak user objelerini UserVm constructorina yollar
+	@GetMapping("/api/1.0/users")
+	Page<UserVm> getUsers(Pageable page){
+		return this.userService.getUsers(page).map(UserVm::new);
 	}
-	*/
+	
 }
