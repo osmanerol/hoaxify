@@ -3,6 +3,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import AuthReducer from './AuthReducer';
 import SecureLS from 'secure-ls';
+import { setAuthorizationHeader } from '../api/ApiCall';
 
 const secureLs=new SecureLS();
 
@@ -27,10 +28,13 @@ const updateStateInStorage=newState=>{
 }
 
 const configureStore=()=>{
-    const store=createStore(AuthReducer,getStateFromStorage(),composeWithDevTools(applyMiddleware(thunk)));
+    const initialState=getStateFromStorage();
+    setAuthorizationHeader(initialState);
+    const store=createStore(AuthReducer,initialState,composeWithDevTools(applyMiddleware(thunk)));
     //  store uzerindeki degisimlerden haberdar olabilmek icin
     store.subscribe(()=>{
         updateStateInStorage(store.getState());
+        setAuthorizationHeader(store.getState());
     })
     return store;
 }

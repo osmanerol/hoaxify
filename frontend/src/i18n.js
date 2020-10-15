@@ -17,7 +17,13 @@ i18n.use(initReactI18next).init({
                 Logout:"Logout",
                 Users:"Users",
                 Previous:"< previous",
-                Next:"next >"
+                Next:"next >",
+                "Load Failure":"Load Failure",
+                "User not found":"User not found.",
+                Edit:"Edit",
+                "Change Display Name":"Change Display Name",
+                Save:"Save",
+                Cancel:"Cancel"
             }
         },
         tr:{
@@ -34,7 +40,13 @@ i18n.use(initReactI18next).init({
                 Logout:"Çıkış Yap",
                 Users:"Kullanıcılar",
                 Previous:"< önceki",
-                Next:"sonraki >"
+                Next:"sonraki >",
+                "Load Failure":"Liste alınamadı",
+                "User not found":"Kullanıcı bulunamadı.",
+                Edit:"Düzenle",
+                "Change Display Name":"Tercih Edilen İsmi Değiştir",
+                Save:"Kaydet",
+                Cancel:"İptal Et"
             }
         }
     },

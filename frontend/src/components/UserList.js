@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { getUsers } from '../api/ApiCall';
 import { useTranslation } from 'react-i18next';
 import UserListItem from '../components/UserListItem';
+import { useApiProgress } from '../shared/ApiProgress'; 
+import Spinner from '../components/Spinner';
 
 const UserList=()=>{
     const [page,setPage]=useState({
@@ -10,11 +12,17 @@ const UserList=()=>{
         number:0
     });
 
-    const loadUsers=(page)=>{
-        getUsers(page)
-        .then(response=>{
+    const [loadFailure,setLoadFailure]=useState(false);
+    const pendingApiCall=useApiProgress('get', '/api/1.0/users?page');
+
+    const loadUsers=async page=>{
+        setLoadFailure(false);
+        try{        
+            const response=await getUsers(page);
             setPage(response.data);
-        })
+        }catch(error){
+            setLoadFailure(true);
+        }
     }
     
     useEffect(()=>{
@@ -33,6 +41,24 @@ const UserList=()=>{
 
     const { t }=useTranslation();
     const { content:users, first, last }=page;
+    
+    let actionDiv=(
+        <div>
+            {
+                first===false && <button className="btn btn-sm btn-light" onClick={onClickPrevious}>{t("Previous")}</button>
+            }
+            {
+                last===false && <button className="btn btn-sm btn-light float-right" onClick={onClickNext}>{t("Next")}</button>
+            }
+        </div>
+    )
+
+    if(pendingApiCall){
+        actionDiv=(
+            <Spinner />
+        )
+    }
+
     return (
         <div className="card mt-3">
             <h3 className="card-header text-center">{t("Users")}</h3>
@@ -44,14 +70,13 @@ const UserList=()=>{
                     )
                 }
             </div>
-            <div>
-                {
-                    first===false && <button className="btn btn-sm btn-light" onClick={onClickPrevious}>{t("Previous")}</button>
-                }
-                {
-                    last===false && <button className="btn btn-sm btn-light float-right" onClick={onClickNext}>{t("Next")}</button>
-                }
-            </div>
+            {actionDiv}
+            {
+                loadFailure &&
+                <div className="text-center text-danger">
+                    {t("Load Failure")}
+                </div>
+            }
         </div>
     );
 }
