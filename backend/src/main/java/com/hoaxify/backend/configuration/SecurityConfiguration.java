@@ -30,7 +30,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		//	bu pathe gelen requestlerin icinde authentication parametreleri olmali
 		http
 			.authorizeRequests().antMatchers(HttpMethod.POST, "/api/1.0/auth").authenticated()
-							    .antMatchers(HttpMethod.PUT, "/api/1.0/user/{username}").authenticated()
+							    .antMatchers(HttpMethod.PUT, "/api/1.0/users/{username}").authenticated()
 			.and()
 			.authorizeRequests().anyRequest().permitAll();
 		

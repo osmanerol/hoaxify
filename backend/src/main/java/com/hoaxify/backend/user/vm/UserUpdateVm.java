@@ -6,5 +6,6 @@ import lombok.Data;
 public class UserUpdateVm {
 
 	private String displayName;
+	private String image;
 	
 }

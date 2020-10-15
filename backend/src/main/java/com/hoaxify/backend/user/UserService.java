@@ -1,11 +1,14 @@
 package com.hoaxify.backend.user;
 
+import java.io.IOException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.hoaxify.backend.error.NotFoundException;
+import com.hoaxify.backend.file.FileService;
 import com.hoaxify.backend.user.vm.UserUpdateVm;
 
 @Service
@@ -13,10 +16,12 @@ public class UserService {
 
 	UserRepository userRepository;
 	PasswordEncoder passwordEncoder;
+	FileService fileService;
 	
-	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, FileService fileService) {
 		this.userRepository=userRepository;
 		this.passwordEncoder=passwordEncoder;
+		this.fileService=fileService;
 	}
 	
 	public void save(User user) {
@@ -43,8 +48,18 @@ public class UserService {
 	public User updateUser(String username, UserUpdateVm updatedUser) {
 		User inDB=this.getUserByUsername(username);
 		inDB.setDisplayName(updatedUser.getDisplayName());
-		this.userRepository.save(inDB);
-		return inDB;
+		if(updatedUser.getImage()!=null) {
+			// inDB.setImage(updatedUser.getImage());
+			try {
+				String storedFileName=this.fileService.writeBase64EncodedStringToFile(updatedUser.getImage());
+				inDB.setImage(storedFileName);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return this.userRepository.save(inDB);
 	}
+
+	
 	
 }

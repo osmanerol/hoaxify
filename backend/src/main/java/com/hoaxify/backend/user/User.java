@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -39,6 +40,7 @@ public class User implements UserDetails {
 	@Pattern(regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message="{hoxafiy.constraints.password.Pattern.Message}")
 	private String password;
 
+	// @Lob - size buyutme
 	private String image;
 
 	@Override
@@ -52,7 +54,7 @@ public class User implements UserDetails {
 	}
 
 	@Override
-	public boolean isAccountNonLocked() {
+	public boolean isAccountNonLocked() {	
 		return true;
 	}
 

@@ -19,6 +19,8 @@ const ProfileCard = props => {
     const { t }=useTranslation();
     const pendingApiCall=useApiProgress('put','/api/1.0/users/'+username);
     const [editable, setEditable]=useState(false);
+    const [newImage, setNewImage]=useState();
+    const [imageName, setImageName]=useState("Choose File");
 
     useEffect(()=>{
         setEditable(pathUsername===loggedInUsername)
@@ -32,29 +34,42 @@ const ProfileCard = props => {
     useEffect(()=>{
         if(!inEditMode){
             setUpdateDisplayName(undefined);
+            setNewImage(undefined);
+            setImageName("Choose File");    
         }
         else{
             setUpdateDisplayName(displayName);
         }
     },[inEditMode,displayName])
 
-    const onClickSave=async ()=>{
+    const onChangeFile=(event)=>{
+        const file=event.target.files[0];
+        const fileName=event.target.files[0].name;
+        const fileReader=new FileReader();
+        fileReader.onloadend=()=>{
+            setNewImage(fileReader.result);
+            setImageName(fileName);
+        }
+        fileReader.readAsDataURL(file); 
+    }
+
+    const onClickSave=async event=>{
+        event.preventDefault();
         const body={
-            displayName:updateDisplayName
+            displayName:updateDisplayName,
+            image:newImage.split(',')[1]
         }
         try{
             const response=await updateUser(username,body);
             setUser(response.data);
             setInEditMode(false);
-        } catch(error){
-
-        }
+        } catch(error){}
     }
 
     return (
         <div className="card mt-2 text-center">
             <div className="card-header">
-                <ProifleImageWithDefault image={image} className="rounded-circle shadow" width="100" height="100" /> 
+                <ProifleImageWithDefault image={image} tempimage={newImage} className="rounded-circle shadow" width="100" height="100" /> 
             </div>
             <div className="card-body">
                 {
@@ -69,13 +84,22 @@ const ProfileCard = props => {
                 }
                 {
                     inEditMode &&
-                    <div>
+                    <form className="col-md-5 mx-auto">
                         <Input label={t("Change Display Name")} type="text" defaultValue={displayName} onChange={event=>setUpdateDisplayName(event.target.value)} />
+                        <div className="input-group mb-3">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text">Upload</span>
+                            </div>
+                            <div className="custom-file">
+                                <input type="file" className="custom-file-input" id="inputGroupFile01" onChange={onChangeFile} />
+                                <label className="custom-file-label text-left" htmlFor="inputGroupFile01">{imageName}</label>
+                            </div>
+                        </div>
                         <div>
                             <ButtonWithProgress className="btn btn-primary d-inline-flex mr-2" onClick={onClickSave} displayName={pendingApiCall} pendingApiCall={pendingApiCall} label={<> <i className="material-icons mr-1">save</i>{t("Save")} </>} />
                             <button className="btn btn-light d-inline-flex" onClick={()=>setInEditMode(false)} disabled={pendingApiCall }><span className="material-icons mr-1">close</span>{t("Cancel")}</button>
                         </div>
-                    </div>
+                    </form>
                 }
             </div>
         </div>
