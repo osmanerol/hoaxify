@@ -43,21 +43,27 @@ const ProfileCard = props => {
     },[inEditMode,displayName])
 
     const onChangeFile=(event)=>{
-        const file=event.target.files[0];
-        const fileName=event.target.files[0].name;
-        const fileReader=new FileReader();
-        fileReader.onloadend=()=>{
-            setNewImage(fileReader.result);
-            setImageName(fileName);
+        if(!(event.target.files.length<1)){
+            const file=event.target.files[0];
+            const fileName=event.target.files[0].name;
+            const fileReader=new FileReader();
+            fileReader.onloadend=()=>{
+                setNewImage(fileReader.result);
+                setImageName(fileName);
+            }
+            fileReader.readAsDataURL(file); 
         }
-        fileReader.readAsDataURL(file); 
     }
 
     const onClickSave=async event=>{
         event.preventDefault();
+        let image;
+        if(newImage){
+            image=newImage.split(',')[1];
+        }
         const body={
             displayName:updateDisplayName,
-            image:newImage.split(',')[1]
+            image
         }
         try{
             const response=await updateUser(username,body);

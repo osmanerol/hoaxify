@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 
 import com.hoaxify.backend.user.User;
 import com.hoaxify.backend.user.UserService;
@@ -19,6 +20,7 @@ public class BackendApplication {
 	
 	// baslangicta otomatik kullanici olusturma
 	@Bean
+	@Profile("dev") // sadece belirli profilde calis
 	CommandLineRunner createInitialUser(UserService userService) {
 		return new CommandLineRunner() {
 			

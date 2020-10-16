@@ -7,7 +7,7 @@ const UserListItem = props => {
     const { username, displayName, image }=user;
     let imageSource=defaultPicture;
     if(image){
-        imageSource=user.image;
+        imageSource='images/'+user.image    ;
     }
     return (
         <Link to={`/user/${username}`} className="list-group-item list-group-item-action" >

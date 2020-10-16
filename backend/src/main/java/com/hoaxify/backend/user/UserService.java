@@ -49,13 +49,16 @@ public class UserService {
 		User inDB=this.getUserByUsername(username);
 		inDB.setDisplayName(updatedUser.getDisplayName());
 		if(updatedUser.getImage()!=null) {
-			// inDB.setImage(updatedUser.getImage());
+			//	resim guncellemede eski resmi silme
+			String oldImageName=inDB.getImage();
 			try {
 				String storedFileName=this.fileService.writeBase64EncodedStringToFile(updatedUser.getImage());
 				inDB.setImage(storedFileName);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			//	resim guncellemede eski resmi silme
+			this.fileService.deleteFile(oldImageName);
 		}
 		return this.userRepository.save(inDB);
 	}
