@@ -60,7 +60,7 @@ const UserList=()=>{
     }
 
     return (
-        <div className="card mt-3">
+        <div className="card">
             <h3 className="card-header text-center">{t("Users")}</h3>
             <div className="list-group">
                 {

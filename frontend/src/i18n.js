@@ -25,7 +25,9 @@ i18n.use(initReactI18next).init({
                 Save:"Save",
                 Cancel:"Cancel",
                 "Choose file":"Choose file",
-                Profile:"Profile"
+                Profile:"Profile",
+                "There are no hoaxes":"There are no hoaxes.", 
+                "Load old hoaxes":"Load old hoaxes."
             }
         },
         tr:{
@@ -50,7 +52,9 @@ i18n.use(initReactI18next).init({
                 Save:"Kaydet",
                 Cancel:"İptal Et",
                 "Choose file":"Dosya Seç",
-                Profile:"Profil"
+                Profile:"Profil",
+                "There are no hoaxes":"Hoax bulunamadı.",
+                "Load old hoaxes":"Geçmiş hoaxları getir."
             }
         }
     },

@@ -25,7 +25,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.csrf().disable();
 		http.httpBasic().authenticationEntryPoint(new AuthEntryPoint());
 		//	h2-console browser
-		http.headers().frameOptions().sameOrigin();
+		http.headers().frameOptions().disable();
 		
 		//	bu pathe gelen requestlerin icinde authentication parametreleri olmali
 		http
