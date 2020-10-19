@@ -48,7 +48,7 @@ public class UserController {
 	//	update username
 	@PutMapping("/users/{username}")
 	@PreAuthorize("#username == principal.username") // istegi atan kullanicinin yetkisi var mi kontrolu . principal=loggedInUser
-	UserVm updateUser(@RequestBody UserUpdateVm updatedUser, @PathVariable String username) {
+	UserVm updateUser(@Valid @RequestBody UserUpdateVm updatedUser, @PathVariable String username) {
 		User user=this.userService.updateUser(username, updatedUser);
 		return new UserVm(user);
 	}

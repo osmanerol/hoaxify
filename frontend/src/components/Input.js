@@ -2,10 +2,19 @@ import React from 'react';
 
 const Input = props => {
     const { label, type, name, onChange, error, defaultValue }=props;
-    const className=error ? "form-control is-invalid" : "form-control";
+    let className="form-control";
+    if(type==="file"){
+        className+="-file";
+    }
+    if(error!==undefined){
+        className+=" is-invalid";
+    }
     return (
         <div className="form-group">
-            <label htmlFor={name}>{label}</label>
+            {
+                label && 
+                <label htmlFor={name}>{label}</label>
+            }
             <input type={type} name={name} className={className} onChange={onChange} defaultValue={defaultValue} />
             <div className="invalid-feedback">
                 {error}

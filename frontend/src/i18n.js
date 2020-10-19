@@ -24,7 +24,8 @@ i18n.use(initReactI18next).init({
                 "Change Display Name":"Change Display Name",
                 Save:"Save",
                 Cancel:"Cancel",
-                "Choose file":"Choose file"
+                "Choose file":"Choose file",
+                Profile:"Profile"
             }
         },
         tr:{
@@ -48,7 +49,8 @@ i18n.use(initReactI18next).init({
                 "Change Display Name":"Tercih Edilen İsmi Değiştir",
                 Save:"Kaydet",
                 Cancel:"İptal Et",
-                "Choose file":"Dosya Seç"
+                "Choose file":"Dosya Seç",
+                Profile:"Profil"
             }
         }
     },

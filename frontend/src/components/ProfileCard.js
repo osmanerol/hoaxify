@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import ProifleImageWithDefault from './ProifleImageWithDefault';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +7,8 @@ import Input from './Input';
 import { updateUser } from '../api/ApiCall';
 import { useApiProgress } from '../shared/ApiProgress';
 import ButtonWithProgress from './ButtonWithProgress';
-
+import { updateSuccess } from '../redux/AuthAction';
+ 
 const ProfileCard = props => {
     const { username:loggedInUsername}=useSelector(store=>({username:store.username}));
     const [inEditMode, setInEditMode]=useState(false);
@@ -20,12 +21,20 @@ const ProfileCard = props => {
     const pendingApiCall=useApiProgress('put','/api/1.0/users/'+username);
     const [editable, setEditable]=useState(false);
     const [newImage, setNewImage]=useState();
-    const [imageName, setImageName]=useState("Choose File");
+    const [validationErrors, setValidationErrors]=useState({})
+    const dispatch=useDispatch();
 
     useEffect(()=>{
         setEditable(pathUsername===loggedInUsername)
     },[pathUsername, loggedInUsername])
 
+    useEffect(()=>{
+        setValidationErrors(previousErrors=>({...previousErrors,displayName:undefined}));
+    },[updateDisplayName])
+
+    useEffect(()=>{
+        setValidationErrors(previousErrors=>({...previousErrors,image:undefined}));
+    },[newImage])
 
     useEffect(()=>{
         setUser(props.user);
@@ -35,7 +44,6 @@ const ProfileCard = props => {
         if(!inEditMode){
             setUpdateDisplayName(undefined);
             setNewImage(undefined);
-            setImageName("Choose File");    
         }
         else{
             setUpdateDisplayName(displayName);
@@ -45,11 +53,9 @@ const ProfileCard = props => {
     const onChangeFile=(event)=>{
         if(!(event.target.files.length<1)){
             const file=event.target.files[0];
-            const fileName=event.target.files[0].name;
             const fileReader=new FileReader();
             fileReader.onloadend=()=>{
                 setNewImage(fileReader.result);
-                setImageName(fileName);
             }
             fileReader.readAsDataURL(file); 
         }
@@ -69,8 +75,15 @@ const ProfileCard = props => {
             const response=await updateUser(username,body);
             setUser(response.data);
             setInEditMode(false);
-        } catch(error){}
+            dispatch(updateSuccess(response.data));
+        } catch(error){
+            if(error.response.data.validationErrors){
+                setValidationErrors(error.response.data.validationErrors);
+            }
+        }
     }
+
+    const { displayName: displayNameError, image: imageError }=validationErrors;
 
     return (
         <div className="card mt-2 text-center">
@@ -91,16 +104,8 @@ const ProfileCard = props => {
                 {
                     inEditMode &&
                     <form className="col-md-5 mx-auto">
-                        <Input label={t("Change Display Name")} type="text" defaultValue={displayName} onChange={event=>setUpdateDisplayName(event.target.value)} />
-                        <div className="input-group mb-3">
-                            <div className="input-group-prepend">
-                                <span className="input-group-text">Upload</span>
-                            </div>
-                            <div className="custom-file">
-                                <input type="file" className="custom-file-input" id="inputGroupFile01" onChange={onChangeFile} />
-                                <label className="custom-file-label text-left" htmlFor="inputGroupFile01">{imageName}</label>
-                            </div>
-                        </div>
+                        <Input className="mb-0" label={t("Change Display Name")} type="text" defaultValue={displayName} onChange={event=>setUpdateDisplayName(event.target.value)} error={displayNameError} />
+                        <Input type="file" onChange={onChangeFile} error={imageError} />   
                         <div>
                             <ButtonWithProgress className="btn btn-primary d-inline-flex mr-2" onClick={onClickSave} displayName={pendingApiCall} pendingApiCall={pendingApiCall} label={<> <i className="material-icons mr-1">save</i>{t("Save")} </>} />
                             <button className="btn btn-light d-inline-flex" onClick={()=>setInEditMode(false)} disabled={pendingApiCall }><span className="material-icons mr-1">close</span>{t("Cancel")}</button>
