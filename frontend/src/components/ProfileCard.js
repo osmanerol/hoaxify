@@ -86,7 +86,7 @@ const ProfileCard = props => {
     const { displayName: displayNameError, image: imageError }=validationErrors;
 
     return (
-        <div className="card mt-2 text-center">
+        <div className="card text-center">
             <div className="card-header">
                 <ProifleImageWithDefault image={image} tempimage={newImage} className="rounded-circle shadow" width="100" height="100" /> 
             </div>
@@ -103,7 +103,7 @@ const ProfileCard = props => {
                 }
                 {
                     inEditMode &&
-                    <form className="col-md-5 mx-auto">
+                    <form className="col-md-12 mx-auto">
                         <Input className="mb-0" label={t("Change Display Name")} type="text" defaultValue={displayName} onChange={event=>setUpdateDisplayName(event.target.value)} error={displayNameError} />
                         <Input type="file" onChange={onChangeFile} error={imageError} />   
                         <div>

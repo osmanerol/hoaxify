@@ -39,6 +39,22 @@ export const postHoax=hoax=>{
     return axios.post("/api/1.0/hoaxes",hoax);
 }
 
-export const getHoaxes=(page=0)=>{
-    return axios.get("/api/1.0/hoaxes?page="+page);
+export const getHoaxes=(username, page=0)=>{
+    const path=username ? `/api/1.0/users/${username}/hoaxes?page=` : '/api/1.0/hoaxes?page=';
+    return axios.get(path+page);
+}
+
+export const getOldHoaxes=(id, username)=>{
+    const path=username ? `/api/1.0/users/${username}/hoaxes/${id}` : `/api/1.0/hoaxes/${id}`;
+    return axios.get(path);
+}
+
+export const getNewHoaxCount=(id, username)=>{
+    const path=username ? `/api/1.0/users/${username}/hoaxes/${id}?count=true` : `/api/1.0/hoaxes/${id}?count=true`;
+    return axios.get(path);
+}
+
+export const getNewHoaxes=(id, username)=>{
+    const path=username ? `/api/1.0/users/${username}/hoaxes/${id}?direction=after` : `/api/1.0/hoaxes/${id}?direction=after`;
+    return axios.get(path);
 }

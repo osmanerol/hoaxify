@@ -1,12 +1,19 @@
 import  { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export const useApiProgress=(apiMethod, apiPath)=>{
+//  strict, pathin birebir eslesme durumunu kontrol etmeyi saglar
+export const useApiProgress=(apiMethod, apiPath, strictPath)=>{
     const [pendingApiCall,setPendingApiCall]=useState(false);
     useEffect(()=>{
         let requestInterceptor, responseInterceptor;
         const updateApiCallFor=(method, url, inProgress)=>{
-            if(url.startsWith(apiPath) && method===apiMethod){
+            if(method!==apiMethod){
+                return ;
+            }
+            if(strictPath && url===apiPath){
+                setPendingApiCall(inProgress);
+            }
+            else if(!strictPath && url.startsWith(apiPath)){
                 setPendingApiCall(inProgress);
             }
         }
@@ -33,10 +40,10 @@ export const useApiProgress=(apiMethod, apiPath)=>{
         registerInterceptors();
 
         //  componentWillUnmount isini yapar
-        return unmounth=>{
+        return function unmount(){
             unregisterInterceptors();
         }
     // })
-    },[apiMethod, apiPath])
+    },[apiMethod, apiPath, strictPath])
     return pendingApiCall;
 }

@@ -34,11 +34,11 @@ public class BackendApplication {
 					user.setDisplayName("User "+i);
 					user.setPassword("P4ssword");
 					userService.save(user);
-				}
-				for(int i=1;i<=50;i++) {
-					Hoax hoax=new Hoax();
-					hoax.setContent("Hoax - "+i);
-					hoaxService.save(hoax);
+					for(int j=1;j<=20;j++) {
+						Hoax hoax=new Hoax();
+						hoax.setContent("Hoax - "+j+" from user("+i+")");
+						hoaxService.save(hoax,user);
+					}
 				}
 			}
 		};
