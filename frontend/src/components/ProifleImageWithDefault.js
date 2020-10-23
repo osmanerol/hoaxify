@@ -5,7 +5,7 @@ const ProifleImageWithDefault = props => {
     const { image, tempimage }=props;
     let imageSource=defaultPicture;
     if(image){
-        imageSource='/images/'+image;
+        imageSource='/images/profile/'+image;
     }
 
     // event.target=img;

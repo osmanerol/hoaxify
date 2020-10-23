@@ -32,7 +32,13 @@ public class WebConfiguration implements WebMvcConfigurer {
 			
 			@Override
 			public void run(String... args) throws Exception {
-				File folder=new File(appConfiguration.getUploadPath());
+				createFolder(appConfiguration.getUploadPath());
+				createFolder(appConfiguration.getProfileStoragePath());
+				createFolder(appConfiguration.getAttachmentStoragePath());
+			}
+
+			private void createFolder(String path) {
+				File folder=new File(path);
 				// 	eger varsa ve klasorse
 				boolean folderExist=folder.exists() && folder.isDirectory();
 				if(!folderExist) {

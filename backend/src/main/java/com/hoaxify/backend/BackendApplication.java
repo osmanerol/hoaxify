@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 
-import com.hoaxify.backend.hoax.Hoax;
 import com.hoaxify.backend.hoax.HoaxService;
+import com.hoaxify.backend.hoax.vm.HoaxSubmitVm;
 import com.hoaxify.backend.user.User;
 import com.hoaxify.backend.user.UserService;
 
@@ -35,7 +35,7 @@ public class BackendApplication {
 					user.setPassword("P4ssword");
 					userService.save(user);
 					for(int j=1;j<=20;j++) {
-						Hoax hoax=new Hoax();
+						HoaxSubmitVm hoax=new HoaxSubmitVm();
 						hoax.setContent("Hoax - "+j+" from user("+i+")");
 						hoaxService.save(hoax,user);
 					}

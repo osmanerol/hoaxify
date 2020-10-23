@@ -8,10 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Size;
 
+import com.hoaxify.backend.file.FileAttachment;
 import com.hoaxify.backend.user.User;
 
 import lombok.Data;
@@ -24,7 +25,6 @@ public class Hoax {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
-	@Size(min=1,max=1000)
 	@Column(length=1000)
 	private String content;
 	
@@ -33,5 +33,8 @@ public class Hoax {
 	
 	@ManyToOne // foreign key mantigi
 	private User user;
+	
+	@OneToOne(mappedBy="hoax", orphanRemoval = true) // tekil referans uzerinden, hoax silindiginde onunla iliskili foreign keyli entry silinecek veya cascade=CascadeType.REMOVE
+	private FileAttachment fileAttachment;
 	
 }

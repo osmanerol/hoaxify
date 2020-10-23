@@ -13,7 +13,7 @@ import com.hoaxify.backend.user.vm.UserUpdateVm;
 
 @Service
 public class UserService {
-
+	
 	UserRepository userRepository;
 	PasswordEncoder passwordEncoder;
 	FileService fileService;
@@ -58,9 +58,15 @@ public class UserService {
 				e.printStackTrace();
 			}
 			//	resim guncellemede eski resmi silme
-			this.fileService.deleteFile(oldImageName);
+			this.fileService.deleteProfileImage(oldImageName);
 		}
 		return this.userRepository.save(inDB);
+	}
+
+	public void deleteUser(String username) {
+		User inDB=this.userRepository.findByUsername(username);
+		this.fileService.deleteAllStoredFilesForUser(inDB);
+		this.userRepository.delete(inDB);
 	}
 
 	
