@@ -1,0 +1,6 @@
+2020-10-26 13:23:34 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "TOEN" not found; SQL statement:
+delete from toen [42102-200]
+2020-10-26 13:31:02 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SETOKEN[*] LECT * FROM TOKEN"; expected "SET, SAVEPOINT, SCRIPT, SHUTDOWN, SHOW"; SQL statement:
+SETOKEN LECT * FROM TOKEN [42001-200]

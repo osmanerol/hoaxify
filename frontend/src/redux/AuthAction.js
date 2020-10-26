@@ -1,8 +1,11 @@
 import * as ACTIONS from './Constansts';
-import { login, signup } from '../api/ApiCall';
+import { login, signup, logout } from '../api/ApiCall';
 
 export const logoutSuccess=()=>{
-    return dispatch=>{
+    return async dispatch=>{
+        try{
+            await logout();
+        }catch(err){}
         dispatch({
             type:ACTIONS.LOGOUT_SUCCESS
         })
@@ -31,8 +34,9 @@ export const loginHandler=creds=>{
     return async dispatch=>{
         const response=await login(creds);
         const authState={
-            ...response.data,
-            password:creds.password
+            ...response.data.user,
+            password:creds.password,
+            token:response.data.token
         }
         dispatch(loginSuccess(authState));
         return response;

@@ -17,6 +17,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.hoaxify.backend.auth.Token;
 import com.hoaxify.backend.hoax.Hoax;
 
 import lombok.Data;
@@ -50,6 +51,9 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "user", cascade=CascadeType.REMOVE)
 	private List<Hoax> hoaxes;
 
+	@OneToMany(mappedBy="user", cascade=CascadeType.REMOVE)
+	private List<Token> tokens;
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return AuthorityUtils.createAuthorityList("Role_user");

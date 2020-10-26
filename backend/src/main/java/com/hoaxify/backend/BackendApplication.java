@@ -28,16 +28,20 @@ public class BackendApplication {
 			
 			@Override
 			public void run(String... args) throws Exception {
-				for(int i=1;i<=25;i++) {
-					User user=new User();
-					user.setUsername("user"+i);
-					user.setDisplayName("User "+i);
-					user.setPassword("P4ssword");
-					userService.save(user);
-					for(int j=1;j<=20;j++) {
-						HoaxSubmitVm hoax=new HoaxSubmitVm();
-						hoax.setContent("Hoax - "+j+" from user("+i+")");
-						hoaxService.save(hoax,user);
+				try {
+					userService.getUserByUsername("user1");
+				} catch(Exception ex){ 
+					for(int i=1;i<=25;i++) {
+						User user=new User();
+						user.setUsername("user"+i);
+						user.setDisplayName("User "+i);
+						user.setPassword("P4ssword");
+						userService.save(user);
+						for(int j=1;j<=20;j++) {
+							HoaxSubmitVm hoax=new HoaxSubmitVm();
+							hoax.setContent("Hoax - "+j+" from user("+i+")");
+							hoaxService.save(hoax,user);
+						}
 					}
 				}
 			}
